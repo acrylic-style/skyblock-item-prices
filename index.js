@@ -1,12 +1,14 @@
 const express = require('express')
 const app = express()
 const util = require('./src/util')
+const { LoggerFactory } = require('logger.js')
+const logger = LoggerFactory.getLogger('main', 'blue')
 require('dotenv-safe').config()
 const env = process.env
 app.set('view engine', 'ejs')
 
-app.get('/all-prices', async (req, res) => {
-  res.json(await util.getAllActiveSkyblockAuctions(env.apiKey))
+app.get('/api/all-auctions', async (req, res) => {
+  res.json(await util.getAllSkyblockAuctions(env.apiKey))
 })
 
 app.get('/', async (req, res) => {
@@ -73,4 +75,4 @@ app.get('/', async (req, res) => {
 })
 
 app.listen(env.listenPort)
-console.log('Web server is ready!')
+logger.info('Web server is ready!')
