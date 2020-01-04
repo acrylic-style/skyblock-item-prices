@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Skyblock Item Prices</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+    <!-- DO NOT OPEN THIS SCRIPT TAG OR YOUR BROWSER WILL CRASH -->
+    <script type="text/javascript">
+      function htmlDecode(input){
+        const e = document.createElement('textarea');
+        e.innerHTML = input;
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+      }
+      const auctions = []
+      <% auctions.forEach(auction => { %>
+        auctions.push({
+          "displayName": "<%= auction.displayName %>",
+          "sellPrice": <%= auction.sellPrice %>,
+          "highestBid": <%= auction.highestBid %>,
+          "lowestBid": <%= auction.lowestBid %>,
+          "auctions": <%= auction.auctions %>,
+        })
+      <% }) //%>
+      const auctionsRaw = []
+      <% auctionsRaw.forEach(auction => { %>
+        auctionsRaw.push({
+          "displayName": "<%= auction.displayName %>",
+          "sellPrice": <%= auction.sellPrice %>,
+          "highestBid": <%= auction.highestBid %>,
+          "lowestBid": <%= auction.lowestBid %>,
+          "auctions": <%= auction.auctions %>,
+        })
+      <% }) //%>
+    </script>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Skyblock Item Prices List</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><input id="search" type="text" oninput="receivedInput();" placeholder="Search" size="50"></input></li>
+        </ul>
+      </div>
+    </nav>
+    <br />
+    <div class="row container">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3"><a href="#allAuctions">All</a></li>
+            <li class="tab col s3"><a class="active" href="#activeAuctions">Active</a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="allAuctions" class="col s12">
+        <p>Total auctions: <%= auctionsRawCount %></p>
+        <div style="overflow:auto;">
+          <table id="allTable">
+            <tr>
+              <th>Item Name</th>
+              <th>Average Price</th>
+              <th>Highest Bid</th>
+              <th>Lowest Bid</th>
+              <th>Auctions</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="activeAuctions" class="col s12">
+        <p>Total auctions: <%= auctionsCount %></p>
+        <div style="overflow:auto;">
+          <table id="table">
+            <tr>
+              <th>Item Name</th>
+              <th>Average Price</th>
+              <th>Highest Bid</th>
+              <th>Lowest Bid</th>
+              <th>Active Auctions</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div style="display: none;">
+        <table id="hiddenTable">
+          <tr>
+            <th>Item Name</th>
+            <th>Average Price</th>
+            <th>Highest Bid</th>
+            <th>Lowest Bid</th>
+            <th>Active Auctions</th>
+          </tr>
+        </table>
+      </div>
+      <script type="text/javascript">
+        const hiddenTable = document.getElementById('hiddenTable')
+        const table = document.getElementById('table')
+        auctions.forEach(auction => {
+          const tr = document.createElement('tr')
+          const itemName = document.createElement('td')
+          itemName.textContent = htmlDecode(auction.displayName)
+          const sellPrice = document.createElement('td')
+          sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
+          const highestBid = document.createElement('td')
+          highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
+          const lowestBid = document.createElement('td')
+          lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
+          const activeAuctions = document.createElement('td')
+          activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+          tr.appendChild(itemName)
+          tr.appendChild(sellPrice)
+          tr.appendChild(highestBid)
+          tr.appendChild(lowestBid)
+          tr.appendChild(activeAuctions)
+          table.appendChild(tr)
+        })
+        const allTable = document.getElementById('allTable')
+        auctionsRaw.forEach(auction => {
+          const tr = document.createElement('tr')
+          const itemName = document.createElement('td')
+          itemName.textContent = htmlDecode(auction.displayName)
+          const sellPrice = document.createElement('td')
+          sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
+          const highestBid = document.createElement('td')
+          highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
+          const lowestBid = document.createElement('td')
+          lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
+          const activeAuctions = document.createElement('td')
+          activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+          tr.appendChild(itemName)
+          tr.appendChild(sellPrice)
+          tr.appendChild(highestBid)
+          tr.appendChild(lowestBid)
+          tr.appendChild(activeAuctions)
+          allTable.appendChild(tr)
+        })
+        const tabs = document.getElementsByClassName("tabs")
+        for (let index = 0; index < tabs.length; index++) {
+          M.Tabs.init(tabs.item(index));        
+        }
+        function receivedInput() {
+          const value = document.getElementById('search').value.toLowerCase()
+          document.getElementById("table").innerHTML = hiddenTable.innerHTML
+          document.getElementById("allTable").innerHTML = hiddenTable.innerHTML
+          auctions.forEach(auction => {
+            if (auction.displayName.toLowerCase().includes(value)) {
+              const tr = document.createElement('tr')
+              const itemName = document.createElement('td')
+              itemName.textContent = htmlDecode(auction.displayName)
+              const sellPrice = document.createElement('td')
+              sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
+              const highestBid = document.createElement('td')
+              highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
+              const lowestBid = document.createElement('td')
+              lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
+              const activeAuctions = document.createElement('td')
+              activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+              tr.appendChild(itemName)
+              tr.appendChild(sellPrice)
+              tr.appendChild(highestBid)
+              tr.appendChild(lowestBid)
+              tr.appendChild(activeAuctions)
+              table.appendChild(tr)
+            }
+          })
+          auctionsRaw.forEach(auction => {
+            if (auction.displayName.toLowerCase().includes(value)) {
+              const tr = document.createElement('tr')
+              const itemName = document.createElement('td')
+              itemName.textContent = htmlDecode(auction.displayName)
+              const sellPrice = document.createElement('td')
+              sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
+              const highestBid = document.createElement('td')
+              highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
+              const lowestBid = document.createElement('td')
+              lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
+              const activeAuctions = document.createElement('td')
+              activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+              tr.appendChild(itemName)
+              tr.appendChild(sellPrice)
+              tr.appendChild(highestBid)
+              tr.appendChild(lowestBid)
+              tr.appendChild(activeAuctions)
+              allTable.appendChild(tr)
+            }
+          })
+        }
+      </script>
+    </div>
+  </body>
+</html>
