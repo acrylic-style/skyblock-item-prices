@@ -23,21 +23,29 @@ app.get('/', async (req, res) => {
     allAuctions[util.stripColor(auction.item_name)] = allAuctions[util.stripColor(auction.item_name)] + 1
   })
   const auctionsSum = Object.values(allAuctions).reduce((a, b) => a + b)
-  auctions.filter((auction, i, a) => auction.bids.length > 0 && (a.length <= 10 || (auction.end-Date.now()) <= 1000*60*10)).forEach(auction => {
+  auctions.filter(auction => auction.bids.length > 0).forEach(auction => {
     if (!auctionsMap[util.stripColor(auction.item_name)]) auctionsMap[util.stripColor(auction.item_name)] = []
-    auctionsMap[util.stripColor(auction.item_name)].push(auction.highest_bid_amount)
+    auctionsMap[util.stripColor(auction.item_name)].push(auction)
   })
   let sum = 0
   let highestBid = 0
   let lowestBid = Number.MAX_VALUE
   Object.keys(auctionsMap).forEach(key => {
     if (auctionsMap[key].length !== 0) {
-      auctionsMap[key].forEach(bid => {
-        sum += bid
+      auctionsMap[key].forEach(auction => {
+        const bid = auction.highest_bid_amount
+        if (auctionsMap[key].filter(auction => (auction.end-Date.now()) <= 1000*60*10).length === 0 || (auction.end-Date.now()) <= 1000*60*10) sum += bid
         if (highestBid < bid) highestBid = bid
         if (lowestBid > bid && bid >= 1) lowestBid = bid
       })
-      auctionsFiltered.push({ displayName: key, sellPrice: Math.round(sum/auctionsMap[key].length), highestBid, lowestBid, auctions: allAuctions[key] })
+      console.log(`${sum}: ${auctionsMap[key].filter(a => (a.end-Date.now()) <= 1000*60*10).length}`)
+      auctionsFiltered.push({
+        displayName: key,
+        sellPrice: Math.round(sum/auctionsMap[key].filter(auction => auctionsMap[key].filter(auction => (auction.end-Date.now()) <= 1000*60*10).length === 0 || (auction.end-Date.now()) <= 1000*60*10).length),
+        highestBid,
+        lowestBid,
+        auctions: allAuctions[key],
+      })
     }
     sum = 0
     highestBid = 0
