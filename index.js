@@ -23,7 +23,7 @@ app.get('/', async (req, res) => {
     allAuctions[util.stripColor(auction.item_name)] = allAuctions[util.stripColor(auction.item_name)] + 1
   })
   const auctionsSum = Object.values(allAuctions).reduce((a, b) => a + b)
-  auctions.filter(auction => auction.bids.length > 0).forEach(auction => {
+  auctions.filter((auction, i, a) => auction.bids.length > 0 && (a.length <= 10 || (auction.end-Date.now()) <= 1000*60*60)).forEach(auction => {
     if (!auctionsMap[util.stripColor(auction.item_name)]) auctionsMap[util.stripColor(auction.item_name)] = []
     auctionsMap[util.stripColor(auction.item_name)].push(auction.highest_bid_amount)
   })
@@ -49,7 +49,7 @@ app.get('/', async (req, res) => {
     if (!allAuctions[util.stripColor(auction.item_name)]) allAuctions[util.stripColor(auction.item_name)] = 0
     allAuctions[util.stripColor(auction.item_name)] = allAuctions[util.stripColor(auction.item_name)] + 1
   })
-  auctionsRaw.filter(auction => auction.bids.length > 0).forEach(auction => {
+  auctionsRaw.filter((auction, i, a) => auction.bids.length > 0 && (a.length <= 10 || (auction.end-Date.now()) <= 1000*60*60)).forEach(auction => {
     if (auctionsMapRaw[util.stripColor(auction.item_name)] == null) auctionsMapRaw[util.stripColor(auction.item_name)] = []
     auctionsMapRaw[util.stripColor(auction.item_name)].push(auction.highest_bid_amount)
   })
