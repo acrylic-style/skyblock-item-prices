@@ -230,13 +230,14 @@ class Util {
       stale: req.stale,
       xhr: req.xhr,
       body: req.body,
-      cookies: req.cookies,
       method: req.method,
       query: req.query,
-      signedCookies: req.signedCookies,
       originalUrl: req.originalUrl,
       url: req.url,
       baseUrl: req.baseUrl,
+      cf_connecting_ip: req.headers['CF-Connecting-IP'] || req.headers['X-CF-Connecting-IP'],
+      remoteAddress: req.connection.remoteAddress,
+      remotePort: req.connection.remotePort,
     }
   }
 }
