@@ -219,10 +219,7 @@ class Util {
   static toMetadata(req) {
     return {
       secure: req.secure,
-      ip: req.ip,
       protocol: req.protocol,
-      ips: req.ips,
-      subdomains: req.subdomains,
       path: req.path,
       hostname: req.hostname,
       host: req.host,
@@ -235,6 +232,8 @@ class Util {
       originalUrl: req.originalUrl,
       url: req.url,
       baseUrl: req.baseUrl,
+      subdomains: JSON.stringify(req.subdomains),
+      headers: JSON.stringify(req.headers),
       cf_connecting_ip: req.headers['CF-Connecting-IP'] || req.headers['X-CF-Connecting-IP'],
       remoteAddress: req.connection.remoteAddress,
       remotePort: req.connection.remotePort,
