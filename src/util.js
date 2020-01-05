@@ -233,7 +233,6 @@ class Util {
       cookies: req.cookies,
       method: req.method,
       query: req.query,
-      route: req.route,
       signedCookies: req.signedCookies,
       originalUrl: req.originalUrl,
       url: req.url,

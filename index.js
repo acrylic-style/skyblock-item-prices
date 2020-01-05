@@ -8,7 +8,7 @@ const env = process.env
 app.set('view engine', 'ejs')
 
 app.on('access', req => {
-  util.log(`Access to ${req.query} from ${req.ip}`, util.toMetadata(req))
+  util.log(`Access to ${req.path} from ${req.ip}`, util.toMetadata(req))
 })
 
 app.get('/api/all-auctions', async (req, res) => {
