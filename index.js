@@ -3,15 +3,21 @@ const app = express()
 const util = require('./src/util')
 const { LoggerFactory } = require('logger.js')
 const logger = LoggerFactory.getLogger('main', 'blue')
-require('dotenv-safe').config()
+require('dotenv-safe').config({ allowEmptyValues: true })
 const env = process.env
 app.set('view engine', 'ejs')
 
+app.on('access', (req, res) => {
+  util.log(`Access to ${req.query} from ${req.ip}`, {req, res})
+})
+
 app.get('/api/all-auctions', async (req, res) => {
+  app.emit('access', req, res)
   res.json(await util.getAllSkyblockAuctions(env.apiKey))
 })
 
 app.get('/', async (req, res) => {
+  app.emit('access', req, res)
   const auctionsRaw = await util.getAllSkyblockAuctions(env.apiKey)
   const auctions = await util.getAllActiveSkyblockAuctions(env.apiKey)
   const auctionsFiltered = []
@@ -82,5 +88,7 @@ app.get('/', async (req, res) => {
   })
 })
 
-app.listen(env.listenPort)
-logger.info('Web server is ready!')
+app.listen(env.listenPort, () => {
+  logger.info('Web server is ready!')
+  util.log('Web server has been started and ready to go.')
+})

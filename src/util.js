@@ -36,6 +36,7 @@ class Util {
     const response = await Util.getAPI('player', key, {[isUniqueId ? 'uuid' : 'name']: uuidOrName})
     if (!response.success) throw new HypixelAPIError(response.cause)
     await cache.setCache(`player:${uuidOrName}`, response.player, 1000*60*60*24) // expires in a day
+    this.log(`Fetched player ${uuidOrName}. Expires in a day.`)
     return response.player
   }
 
@@ -49,6 +50,7 @@ class Util {
     const response = await Util.getAPI('skyblock/profile', key, {profile})
     if (!response.success) throw new HypixelAPIError(response.cause)
     await cache.setCache(`sbprofile:${profile}`, response.profile, 1000*60*60) // expires in a hour
+    this.log(`Fetched profile ${profile.profile_id}. Expires in a hour.`)
     return response.profile
   }
 
@@ -61,7 +63,8 @@ class Util {
     if (!bypassCache && await cache.exists(`skyblock/auctions/?page=${page}`)) return await cache.getCache(`skyblock/auctions/?page=${page}`)
     const response = await Util.getAPI('skyblock/auctions', key, { page }) // actual type: SkyBlockAuctionsAPIResponse
     if (!response.success) throw new HypixelAPIError(response.cause)
-    await cache.setCache(`skyblock/auctions/?page=${page}`, response, 1000*60*60)
+    await cache.setCache(`skyblock/auctions/?page=${page}`, response, 1000*60*60*24)
+    this.log(`Fetched ${response.auctions.length} auctions. Expires in a day.`)
     return response
   }
 
@@ -78,6 +81,7 @@ class Util {
       auctions = auctions.concat(res.auctions)
     }
     await cache.setCache('skyblock/auctions/all', auctions, 1000*60*60*24) // expires in a day
+    this.log(`Fetched ${auctions.length} auctions. Expires in a day.`)
     return auctions
   }
 
@@ -189,12 +193,25 @@ class Util {
    * @returns {string} date like 1d2h3m4s
    */
   static dateDiff(date1, date2) {
-    const time = typeof date2 === 'number' ? date2-(typeof date1 === 'number' ? date1 : date1.getTime()) : date2.getTime()-(typeof date1 === 'number' ? date1 : date1.getTime)
+    const time = typeof date2 === 'number' ? date2-(typeof date1 === 'number' ? date1 : date1.getTime()) : date2.getTime()-(typeof date1 === 'number' ? date1 : date1.getTime())
     const days = Math.floor(time/(1000*60*60*24))
     const hours = Math.floor((time-(1000*60*60*24*days))/(1000*60*60))
     const minutes = Math.floor((time-(1000*60*60*24*days+1000*60*60*hours))/(1000*60))
     const seconds = Math.floor((time-(1000*60*60*24*days+1000*60*60*hours+1000*60*minutes))/1000)
     return `${days === 0 ? '': `${days}d`}${days === 0 && hours === 0 ? '' : `${hours}h`}${days === 0 && hours === 0 && minutes === 0 ? '' : `${minutes}m`}${seconds}s`
+  }
+
+  static async log(message, metadata = null) {
+    if (!process.env.logflareAPIKey || !process.env.logflareSource) return
+    const response = await fetch('https://api.logflare.app/logs', {
+      body: `{"source": "${process.env.logflareSource}", "log_entry": "${message}", "metadata": ${metadata === null ? null : JSON.stringify(metadata)}}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Api-Key': process.env.logflareAPIKey,
+      },
+      method: 'POST',
+    }).then(res => res.json())
+    if (response.message !== 'Logged!') throw new Error(`Couldn't send log: ${response.message}`)
   }
 }
 
