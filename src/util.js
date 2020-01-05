@@ -211,7 +211,7 @@ class Util {
       },
       method: 'POST',
     }).then(res => res.json())
-    if (response.message !== 'Logged!') throw new Error(`Couldn't send log: ${response.message}`)
+    if (response.message !== 'Logged!') throw new Error(`Couldn't send log: ${JSON.stringify(response)}`)
   }
 
   static toMetadata(req) {
