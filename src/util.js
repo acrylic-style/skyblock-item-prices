@@ -233,7 +233,7 @@ class Util {
       url: req.url,
       baseUrl: req.baseUrl,
       subdomains: JSON.stringify(req.subdomains),
-      headers: require('util').inspect(req.headers),
+      headers: JSON.stringify(req.headers),
       cf_connecting_ip: req.headers['cf-connecting-ip'],
       remoteAddress: req.connection.remoteAddress,
       remotePort: req.connection.remotePort,
