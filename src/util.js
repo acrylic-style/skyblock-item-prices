@@ -213,6 +213,31 @@ class Util {
     }).then(res => res.json())
     if (response.message !== 'Logged!') throw new Error(`Couldn't send log: ${response.message}`)
   }
+
+  static toMetadata(req) {
+    return {
+      secure: req.secure,
+      ip: req.ip,
+      protocol: req.protocol,
+      ips: req.ips,
+      subdomains: req.subdomains,
+      path: req.path,
+      hostname: req.hostname,
+      host: req.host,
+      fresh: req.fresh,
+      stale: req.stale,
+      xhr: req.xhr,
+      body: req.body,
+      cookies: req.cookies,
+      method: req.method,
+      query: req.query,
+      route: req.route,
+      signedCookies: req.signedCookies,
+      originalUrl: req.originalUrl,
+      url: req.url,
+      baseUrl: req.baseUrl,
+    }
+  }
 }
 
 module.exports = Util

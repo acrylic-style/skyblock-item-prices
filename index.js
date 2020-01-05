@@ -7,8 +7,8 @@ require('dotenv-safe').config({ allowEmptyValues: true })
 const env = process.env
 app.set('view engine', 'ejs')
 
-app.on('access', (req, res) => {
-  util.log(`Access to ${req.query} from ${req.ip}`, {req, res})
+app.on('access', req => {
+  util.log(`Access to ${req.query} from ${req.ip}`, util.toMetadata(req))
 })
 
 app.get('/api/all-auctions', async (req, res) => {
