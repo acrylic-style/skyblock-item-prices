@@ -237,6 +237,7 @@ class Util {
       cf_connecting_ip: req.headers['cf-connecting-ip'],
       remoteAddress: req.connection.remoteAddress,
       remotePort: req.connection.remotePort,
+      cf_ray: req.headers['cf-ray'],
     }
   }
 }
