@@ -222,7 +222,6 @@ class Util {
       protocol: req.protocol,
       path: req.path,
       hostname: req.hostname,
-      host: req.host,
       fresh: req.fresh,
       stale: req.stale,
       xhr: req.xhr,
@@ -239,6 +238,22 @@ class Util {
       remotePort: req.connection.remotePort,
       cf_ray: req.headers['cf-ray'],
     }
+  }
+
+  /**
+   * @param {string} data
+   * @returns {Promise<Item>}
+   */
+  static async getFirstItem(data) {
+    return (await this.getItems(data))[0]
+  }
+
+  /**
+   * @param {string} data
+   * @returns {Promise<Array<Item>>}
+   */
+  static async getItems(data) {
+    return (await this.decodeNBT(data)).value.i.value.value
   }
 }
 

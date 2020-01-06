@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <%- include('header', {title: 'Skyblock Item Prices List', script: 'auctions-script'}); %>
+  <%- include('header', {title: `Auctions of ${name} | Skyblock Item Prices List`, script: 'auctions-script-withid'}); %>
   <body>
     <nav>
       <div class="nav-wrapper">
@@ -27,10 +27,9 @@
           <table id="allTable">
             <tr>
               <th>Item Name</th>
-              <th>Average Price per 1 item</th>
-              <th>Highest Bid per 1 item</th>
-              <th>Lowest Bid per 1 item</th>
-              <th>Auctions</th>
+              <th>Highest Bid</th>
+              <th>Bids</th>
+              <th>Ends in</th>
             </tr>
           </table>
         </div>
@@ -41,10 +40,9 @@
           <table id="table">
             <tr>
               <th>Item Name</th>
-              <th>Average Price per 1 item</th>
-              <th>Highest Bid per 1 item</th>
-              <th>Lowest Bid per 1 item</th>
-              <th>Active Auctions</th>
+              <th>Highest Bid</th>
+              <th>Bids</th>
+              <th>Ends in</th>
             </tr>
           </table>
         </div>
@@ -53,10 +51,9 @@
         <table id="hiddenTable">
           <tr>
             <th>Item Name</th>
-            <th>Average Price per 1 item</th>
-            <th>Highest Bid per 1 item</th>
-            <th>Lowest Bid per 1 item</th>
-            <th>Active Auctions</th>
+            <th>Highest Bid</th>
+            <th>Bids</th>
+            <th>Ends in</th>
           </tr>
         </table>
       </div>
@@ -67,22 +64,19 @@
           const tr = document.createElement('tr')
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
-          aItemName.href = `/auctions/${auction.displayName}`
+          aItemName.href = `/auction/${auction.auctionId}`
           aItemName.textContent = htmlDecode(auction.displayName)
           itemName.appendChild(aItemName)
-          const sellPrice = document.createElement('td')
-          sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
           const highestBid = document.createElement('td')
-          highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
-          const lowestBid = document.createElement('td')
-          lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
-          const activeAuctions = document.createElement('td')
-          activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+          highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
+          const bids = document.createElement('td')
+          bids.textContent = htmlDecode(auction.bids.toLocaleString())
+          const endsIn = document.createElement('td')
+          endsIn.textContent = htmlDecode(auction.end)
           tr.appendChild(itemName)
-          tr.appendChild(sellPrice)
           tr.appendChild(highestBid)
-          tr.appendChild(lowestBid)
-          tr.appendChild(activeAuctions)
+          tr.appendChild(bids)
+          tr.appendChild(endsIn)
           table.appendChild(tr)
         })
         const allTable = document.getElementById('allTable')
@@ -90,22 +84,19 @@
           const tr = document.createElement('tr')
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
-          aItemName.href = `/auctions/${auction.displayName}`
+          aItemName.href = `/auction/${auction.auctionId}`
           aItemName.textContent = htmlDecode(auction.displayName)
           itemName.appendChild(aItemName)
-          const sellPrice = document.createElement('td')
-          sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
           const highestBid = document.createElement('td')
-          highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
-          const lowestBid = document.createElement('td')
-          lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
-          const activeAuctions = document.createElement('td')
-          activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+          highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
+          const bids = document.createElement('td')
+          bids.textContent = htmlDecode(auction.bids.toLocaleString())
+          const endsIn = document.createElement('td')
+          endsIn.textContent = htmlDecode(auction.end)
           tr.appendChild(itemName)
-          tr.appendChild(sellPrice)
           tr.appendChild(highestBid)
-          tr.appendChild(lowestBid)
-          tr.appendChild(activeAuctions)
+          tr.appendChild(bids)
+          tr.appendChild(endsIn)
           allTable.appendChild(tr)
         })
         const tabs = document.getElementsByClassName("tabs")
@@ -121,22 +112,19 @@
               const tr = document.createElement('tr')
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
-              aItemName.href = `/auctions/${auction.displayName}`
+              aItemName.href = `/auction/${auction.auctionId}`
               aItemName.textContent = htmlDecode(auction.displayName)
               itemName.appendChild(aItemName)
-              const sellPrice = document.createElement('td')
-              sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
               const highestBid = document.createElement('td')
-              highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
-              const lowestBid = document.createElement('td')
-              lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
-              const activeAuctions = document.createElement('td')
-              activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+              highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
+              const bids = document.createElement('td')
+              bids.textContent = htmlDecode(auction.bids.toLocaleString())
+              const endsIn = document.createElement('td')
+              endsIn.textContent = htmlDecode(auction.end)
               tr.appendChild(itemName)
-              tr.appendChild(sellPrice)
               tr.appendChild(highestBid)
-              tr.appendChild(lowestBid)
-              tr.appendChild(activeAuctions)
+              tr.appendChild(bids)
+              tr.appendChild(endsIn)
               table.appendChild(tr)
             }
           })
@@ -145,22 +133,19 @@
               const tr = document.createElement('tr')
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
-              aItemName.href = `/auctions/${auction.displayName}`
+              aItemName.href = `/auction/${auction.auctionId}`
               aItemName.textContent = htmlDecode(auction.displayName)
               itemName.appendChild(aItemName)
-              const sellPrice = document.createElement('td')
-              sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
               const highestBid = document.createElement('td')
-              highestBid.textContent = htmlDecode(auction.highestBid.toLocaleString())
-              const lowestBid = document.createElement('td')
-              lowestBid.textContent = htmlDecode(auction.lowestBid.toLocaleString())
-              const activeAuctions = document.createElement('td')
-              activeAuctions.textContent = htmlDecode(auction.auctions.toLocaleString())
+              highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
+              const bids = document.createElement('td')
+              bids.textContent = htmlDecode(auction.bids.toLocaleString())
+              const endsIn = document.createElement('td')
+              endsIn.textContent = htmlDecode(auction.end)
               tr.appendChild(itemName)
-              tr.appendChild(sellPrice)
               tr.appendChild(highestBid)
-              tr.appendChild(lowestBid)
-              tr.appendChild(activeAuctions)
+              tr.appendChild(bids)
+              tr.appendChild(endsIn)
               allTable.appendChild(tr)
             }
           })

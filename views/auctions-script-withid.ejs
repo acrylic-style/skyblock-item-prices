@@ -1,0 +1,28 @@
+    <!-- DO NOT OPEN THIS SCRIPT TAG OR YOUR BROWSER WILL CRASH -->
+    <script type="text/javascript">
+      function htmlDecode(input){
+        const e = document.createElement('textarea');
+        e.innerHTML = input;
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+      }
+      const auctions = []
+      <% auctions.forEach(auction => { %>
+        auctions.push({
+          "displayName": "<%= auction.displayName %>",
+          "auctionId": "<%= auction.auctionId %>",
+          "currentBid": <%= auction.currentBid %>,
+          "bids": <%= auction.bids %>,
+          "end": "<%= auction.end %>",
+        })
+      <% }) //%>
+      const auctionsRaw = []
+      <% auctionsRaw.forEach(auction => { %>
+        auctionsRaw.push({
+          "displayName": "<%= auction.displayName %>",
+          "auctionId": "<%= auction.auctionId %>",
+          "currentBid": <%= auction.currentBid %>,
+          "bids": <%= auction.bids %>,
+          "end": "<%= auction.end %>",
+        })
+      <% }) //%>
+    </script>

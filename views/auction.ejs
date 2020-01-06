@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <%- include('header', {title: `Auction details | Skyblock Item Prices List`, script: 'auction-script'}); %>
+  <body style="background-color: #101010; color: white;">
+    <script type="text/javascript">
+      function convertColorCode(s) {
+        s.replace(/\u00A70(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #000;">$1</span>');
+        s.replace(/\u00A71(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #00a;">$1</span>');
+        s.replace(/\u00A72(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #0a0;">$1</span>');
+        s.replace(/\u00A73(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #0aa;">$1</span>');
+        s.replace(/\u00A74(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #a00;">$1</span>');
+        s.replace(/\u00A75(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #a0a;">$1</span>');
+        s.replace(/\u00A76(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #fa0;">$1</span>');
+        s.replace(/\u00A77(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #aaa;">$1</span>');
+        s.replace(/\u00A78(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #555;">$1</span>');
+        s.replace(/\u00A79(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #55f;">$1</span>');
+        s.replace(/\u00A7a(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #5f5;">$1</span>');
+        s.replace(/\u00A7b(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #5ff;">$1</span>');
+        s.replace(/\u00A7c(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #f55;">$1</span>');
+        s.replace(/\u00A7d(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #f5f;">$1</span>');
+        s.replace(/\u00A7e(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #ff5;">$1</span>');
+        s.replace(/\u00A7f(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #fff;">$1</span>');
+      }
+    </script>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="/" class="brand-logo left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Skyblock Item Prices List</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li style='font-size: 10px;'>All auctions are updated every 1 day for avoid abusing APIs.&nbsp;&nbsp;&nbsp;</li>
+        </ul>
+      </div>
+    </nav>
+    <br />
+    <div class="row container">
+      <div class="row" style="background-color: #1e1e1e; border: 3px solid #000;">
+        <img class="left" src=""></img>
+      </div>
+    </div>
+  </body>
+</html>

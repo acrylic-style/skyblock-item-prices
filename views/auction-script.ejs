@@ -1,0 +1,9 @@
+    <!-- DO NOT OPEN THIS SCRIPT TAG OR YOUR BROWSER WILL CRASH -->
+    <script type="text/javascript">
+      function htmlDecode(input){
+        const e = document.createElement('textarea');
+        e.innerHTML = input;
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+      }
+      const auction = <%= JSON.stringify(data) %>
+    </script>

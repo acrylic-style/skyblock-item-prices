@@ -17,10 +17,10 @@
  * -----
  *
  * @typedef Auction
- * @property {string} uuid UUID
- * @property {string} auctioneer UUID
- * @property {string} profile_id UUID
- * @property {Array<string>} coop Array of UUIDs
+ * @property {string} uuid Auction ID
+ * @property {string} auctioneer Player UUID of Auctioneer (a player who started the auction)
+ * @property {string} profile_id Profile UUID
+ * @property {Array<string>} coop Array of profile UUIDs
  * @property {number} start
  * @property {number} end
  * @property {string} item_name Item name with reforges.
@@ -31,8 +31,8 @@
  * @property {number} starting_bid Starting bid, 10 is supposed minimum but 1 is possible. (when selling dirts, etc)
  * @property {string} item_bytes Base64 encoded string. You can convert to NBT safety when decoding.
  * @property {boolean} claimed Default: false
- * @property {Array<string>} claimed_bidders Array of UUIDs. Default: Empty array
- * @property {number} highest_bid_amount Highest bid. Default: 0
+ * @property {Array<string>} claimed_bidders Array of player UUIDs. Default: Empty array
+ * @property {number} highest_bid_amount Current highest bid. Default: 0
  * @property {Array<Bid>} bids All bids made to this auction. Default: Empty array
  *
  * -----
@@ -1043,5 +1043,13 @@
     * | 'lobby-skywars'
     * | 'lobby-tntgames'
     * | 'lobby-arcade' } Games
+    * 
+    * -----
+    * 
+    * @typedef {{ id: NBT, Count: NBT, tag: NBT, Damage: NBT }} Item
+    * 
+    * -----
+    * 
+    * @typedef {{type: string, value: any}} NBT
     */
    
