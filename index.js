@@ -106,8 +106,8 @@ app.get('/', async (req, res) => {
   res.render('index', {
     auctions: auctionsFiltered,
     auctionsRaw: auctions2,
-    auctionsCount: auctionsSum,
-    auctionsRawCount: Object.values(allAuctions).reduce((a, b) => a + b),
+    auctionsCount: Math.round(auctionsSum),
+    auctionsRawCount: Math.round(Object.values(allAuctions).reduce((a, b) => a + b)),
   })
 })
 
