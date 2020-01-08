@@ -58,7 +58,7 @@ app.get('/', async (req, res, next) => {
         const auction = auctionsMap[key][i]
         const item = await util.getFirstItem(auction.item_bytes)
         const item_amount = item.Count.value
-        const bid = auction.highest_bid_amount/item_amount
+        const bid = Math.round(auction.highest_bid_amount/item_amount)
         if (auctionsMap[key].filter(auction => (auction.end-Date.now()) <= 1000*60*10).length === 0 || (auction.end-Date.now()) <= 1000*60*10) sum += bid
         if (highestBid < bid) highestBid = bid
         if (lowestBid > bid && bid > 0) lowestBid = bid
