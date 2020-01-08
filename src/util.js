@@ -63,8 +63,8 @@ class Util {
     if (!bypassCache && cache.exists(`skyblock/auctions/?page=${page}`)) return cache.getCache(`skyblock/auctions/?page=${page}`)
     const response = await Util.getAPI('skyblock/auctions', key, { page }) // actual type: SkyBlockAuctionsAPIResponse
     if (!response.success) throw new HypixelAPIError(response.cause)
-    cache.setCache(`skyblock/auctions/?page=${page}`, response, 1000*60*60*24)
-    this.log(`Fetched ${response.auctions.length} auctions. Expires in a day.`)
+    cache.setCache(`skyblock/auctions/?page=${page}`, response, 1000*60*60)
+    this.log(`Fetched ${response.auctions.length} auctions. Expires in a hour.`)
     return response
   }
 
@@ -81,7 +81,7 @@ class Util {
     const results = await Promise.all(promises)
     results.forEach(res => auctions = auctions.concat(res.auctions))
     cache.setCache('skyblock/auctions/all', auctions, 1000*60*60) // expires in a hour
-    this.log(`Fetched ${auctions.length} auctions. Expires in a day.`)
+    this.log(`Fetched ${auctions.length} auctions. Expires in a hour.`)
     return auctions
   }
 
