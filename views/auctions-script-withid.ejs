@@ -5,6 +5,6 @@
         e.innerHTML = input;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
       }
-      const auctions = JSON.parse(htmlDecode("<%= JSON.stringify(auctions) %>").replace(/\n/g, '\\n'))
-      const auctionsRaw = JSON.parse(htmlDecode("<%= JSON.stringify(auctionsRaw) %>").replace(/\n/g, '\\n'))
+      const auctions = JSON.parse(htmlDecode("<%= JSON.stringify(auctions) %>"))
+      const auctionsRaw = JSON.parse(htmlDecode("<%= JSON.stringify(auctionsRaw) %>"))
     </script>
