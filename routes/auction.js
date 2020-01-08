@@ -2,7 +2,7 @@ const router = require('express').Router()
 const util = require('../src/util')
 const minecraft = require('minecraft-data')('1.8.8')
 
-router.get('/auction/:id', async (req, res) => {
+router.get('/auction/:id', async (req, res, next) => {
   const { id } = req.params
   if (!id) {
     res.status(400).json({success: false, message: 'Please specify name.'})
@@ -28,6 +28,7 @@ router.get('/auction/:id', async (req, res) => {
     item_name,
     avgPrice: Math.round(nameSum/auctionsName.length),
   })
+  next()
 })
 
 module.exports = router

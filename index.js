@@ -15,13 +15,14 @@ require('./src/typedefs')
 const Cache = require('./src/cache')
 
 app.get(/.*/, (req, res, next) => {
-  util.info(logger, `Access to ${req.path} from ${req.ip}`, util.toMetadata(req))
+  util.info(logger, `Processing access to ${req.path} from ${req.ip}`, util.toMetadata(req))
   next()
 })
 
-app.get('/', async (req, res) => {
+app.get('/', async (req, res, next) => {
   if (await Cache.exists('routes:/index')) {
     res.render('index', await Cache.getCache('routes:/index'))
+    next()
     return
   }
   const auctionsRaw = await util.getAllSkyblockAuctions(env.apiKey)
@@ -116,12 +117,18 @@ app.get('/', async (req, res) => {
   }
   Cache.setCache('routes:/index', data, 1000*60*60) // expires in a hour
   res.render('index', data)
+  next()
 })
 
 app.use('/api', routes.api)
 
 app.use('/', routes.auctions)
 app.use('/', routes.auction)
+
+app.get(/.*/, (req, res, next) => {
+  util.info(logger, `Access to ${req.path} from ${req.ip} has been completed.`, util.toMetadata(req))
+  next()
+})
 
 util.info(logger, 'Loading cache...')
 Cache.getCacheData().then(data => {

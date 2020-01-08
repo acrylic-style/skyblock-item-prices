@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const util = require('../src/util')
 
-router.get('/auctions/:name', async (req, res) => {
+router.get('/auctions/:name', async (req, res, next) => {
   const { name } = req.params
   if (!name) {
     res.status(400).json({success: false, message: 'Please specify name.'})
@@ -47,6 +47,7 @@ router.get('/auctions/:name', async (req, res) => {
     auctionsRawCount: allAuctions,
     name,
   })
+  next()
 })
 
 module.exports = router
