@@ -20,11 +20,12 @@ app.get(/.*/, (req, res, next) => {
 })
 
 app.get('/', async (req, res, next) => {
-  if (await Cache.exists('routes:/index')) {
-    res.render('index', await Cache.getCache('routes:/index'))
+  if (Cache.exists('routes:/index')) {
+    res.render('index', Cache.getCache('routes:/index'))
     next()
     return
   }
+  util.info(logger, 'Rebuilding index!', { why: 'Cache has been expired' })
   const auctionsRaw = await util.getAllSkyblockAuctions(env.apiKey)
   const auctions = await util.getAllActiveSkyblockAuctions(env.apiKey)
   const auctionsFiltered = []

@@ -32,10 +32,10 @@ class Util {
    * @returns {Promise<Player>}
    */
   static async getPlayer(key, uuidOrName, isUniqueId, bypassCache = false) {
-    if (!bypassCache && await cache.exists(`player:${uuidOrName}`)) return await cache.getCache(`player:${uuidOrName}`)
+    if (!bypassCache && cache.exists(`player:${uuidOrName}`)) return cache.getCache(`player:${uuidOrName}`)
     const response = await Util.getAPI('player', key, {[isUniqueId ? 'uuid' : 'name']: uuidOrName})
     if (!response.success) throw new HypixelAPIError(response.cause)
-    await cache.setCache(`player:${uuidOrName}`, response.player, 1000*60*60*24) // expires in a day
+    cache.setCache(`player:${uuidOrName}`, response.player, 1000*60*60*24) // expires in a day
     this.log(`Fetched player ${uuidOrName}. Expires in a day.`)
     return response.player
   }
@@ -46,10 +46,10 @@ class Util {
    * @returns {Promise<SkyBlockProfile>}
    */
   static async getSkyBlockProfile(key, profile, bypassCache = false) {
-    if (!bypassCache && await cache.exists(`sbprofile:${profile}`)) return await cache.getCache(`sbprofile:${profile}`)
+    if (!bypassCache && cache.exists(`sbprofile:${profile}`)) return cache.getCache(`sbprofile:${profile}`)
     const response = await Util.getAPI('skyblock/profile', key, {profile})
     if (!response.success) throw new HypixelAPIError(response.cause)
-    await cache.setCache(`sbprofile:${profile}`, response.profile, 1000*60*60) // expires in a hour
+    cache.setCache(`sbprofile:${profile}`, response.profile, 1000*60*60) // expires in a hour
     this.log(`Fetched profile ${profile.profile_id}. Expires in a hour.`)
     return response.profile
   }
@@ -60,10 +60,10 @@ class Util {
    * @returns {Promise<SkyBlockAuctionsAPIResponse>}
    */
   static async getSkyBlockAuctions(key, page = 0, bypassCache = false) {
-    if (!bypassCache && await cache.exists(`skyblock/auctions/?page=${page}`)) return await cache.getCache(`skyblock/auctions/?page=${page}`)
+    if (!bypassCache && cache.exists(`skyblock/auctions/?page=${page}`)) return cache.getCache(`skyblock/auctions/?page=${page}`)
     const response = await Util.getAPI('skyblock/auctions', key, { page }) // actual type: SkyBlockAuctionsAPIResponse
     if (!response.success) throw new HypixelAPIError(response.cause)
-    await cache.setCache(`skyblock/auctions/?page=${page}`, response, 1000*60*60*24)
+    cache.setCache(`skyblock/auctions/?page=${page}`, response, 1000*60*60*24)
     this.log(`Fetched ${response.auctions.length} auctions. Expires in a day.`)
     return response
   }
@@ -73,14 +73,14 @@ class Util {
    * @returns {Promise<Array<Auction>>}
    */
   static async getAllSkyblockAuctions(key, bypassCache = false) {
-    if (!bypassCache && await cache.exists('skyblock/auctions/all')) return await cache.getCache('skyblock/auctions/all')
+    if (!bypassCache && cache.exists('skyblock/auctions/all')) return cache.getCache('skyblock/auctions/all')
     const firstPage = await Util.getSkyBlockAuctions(key)
     let auctions = firstPage.auctions
     const promises = []
     for (let i = 1; i < firstPage.totalPages; i++) promises.push(Util.getSkyBlockAuctions(key, i))
     const results = await Promise.all(promises)
     results.forEach(res => auctions = auctions.concat(res.auctions))
-    await cache.setCache('skyblock/auctions/all', auctions, 1000*60*60) // expires in a hour
+    cache.setCache('skyblock/auctions/all', auctions, 1000*60*60) // expires in a hour
     this.log(`Fetched ${auctions.length} auctions. Expires in a day.`)
     return auctions
   }
