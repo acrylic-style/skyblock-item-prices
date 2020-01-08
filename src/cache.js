@@ -2,7 +2,6 @@ const fs = require('fs').promises
 const FILE = `${__dirname}/../cache.json`
 const { LoggerFactory } = require('logger.js')
 const logger = LoggerFactory.getLogger('cache', 'blue')
-const util = require('./util')
 
 /**
  * @typedef CacheData
@@ -25,7 +24,7 @@ class Cache {
 
   static async checkFile() {
     await fs.stat(FILE).catch(async () => {
-      util.info(logger, 'Creating new empty cache.')
+      logger.info('Creating new empty cache.')
       await fs.writeFile(FILE, '{}')
     })
   }
