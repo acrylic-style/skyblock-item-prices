@@ -80,7 +80,7 @@ class Util {
     for (let i = 1; i < firstPage.totalPages; i++) promises.push(Util.getSkyBlockAuctions(key, i))
     const results = await Promise.all(promises)
     results.forEach(res => auctions = auctions.concat(res.auctions))
-    await cache.setCache('skyblock/auctions/all', auctions, 1000*60*60*24) // expires in a day
+    await cache.setCache('skyblock/auctions/all', auctions, 1000*60*60) // expires in a hour
     this.log(`Fetched ${auctions.length} auctions. Expires in a day.`)
     return auctions
   }

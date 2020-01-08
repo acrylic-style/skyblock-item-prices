@@ -20,6 +20,10 @@ app.get(/.*/, (req, res, next) => {
 })
 
 app.get('/', async (req, res) => {
+  if (Cache.exists('routes:/index')) {
+    res.render('index', Cache.getCacheData('routes:/index'))
+    return
+  }
   const auctionsRaw = await util.getAllSkyblockAuctions(env.apiKey)
   const auctions = await util.getAllActiveSkyblockAuctions(env.apiKey)
   const auctionsFiltered = []
@@ -104,12 +108,14 @@ app.get('/', async (req, res) => {
     highestBid = 0
     lowestBid = Number.MAX_VALUE
   }
-  res.render('index', {
+  const data = {
     auctions: auctionsFiltered,
     auctionsRaw: auctions2,
     auctionsCount: auctionsSum,
     auctionsRawCount: Object.values(allAuctions).reduce((a, b) => a + b),
-  })
+  }
+  Cache.setCache('routes:/index', data, 1000*60*60) // expires in a hour
+  res.render('index', data)
 })
 
 app.use('/api', routes.api)
