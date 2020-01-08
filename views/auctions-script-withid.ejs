@@ -3,7 +3,9 @@
       function htmlDecode(input){
         const e = document.createElement('textarea');
         e.innerHTML = input;
-        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        let bruh = ''
+        e.childNodes.forEach(node => bruh += node.nodeValue)
+        return bruh
       }
       const auctions = JSON.parse(htmlDecode("<%= JSON.stringify(auctions) %>"))
       const auctionsRaw = JSON.parse(htmlDecode("<%= JSON.stringify(auctionsRaw) %>"))
