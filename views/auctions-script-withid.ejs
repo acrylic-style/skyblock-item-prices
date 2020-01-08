@@ -5,24 +5,6 @@
         e.innerHTML = input;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
       }
-      const auctions = []
-      <% auctions.forEach(auction => { %>
-        auctions.push({
-          "displayName": "<%= auction.displayName %>",
-          "auctionId": "<%= auction.auctionId %>",
-          "currentBid": <%= auction.currentBid %>,
-          "bids": <%= auction.bids %>,
-          "end": "<%= auction.end %>",
-        })
-      <% }) //%>
-      const auctionsRaw = []
-      <% auctionsRaw.forEach(auction => { %>
-        auctionsRaw.push({
-          "displayName": "<%= auction.displayName %>",
-          "auctionId": "<%= auction.auctionId %>",
-          "currentBid": <%= auction.currentBid %>,
-          "bids": <%= auction.bids %>,
-          "end": "<%= auction.end %>",
-        })
-      <% }) //%>
+      const auctions = JSON.parse(htmlDecode("<%= JSON.stringify(auctions) %>").replace(/\n/g, '\\n'))
+      const auctionsRaw = JSON.parse(htmlDecode("<%= JSON.stringify(auctionsRaw) %>").replace(/\n/g, '\\n'))
     </script>
