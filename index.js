@@ -20,7 +20,7 @@ app.get(/.*/, (req, res, next) => {
 })
 
 app.get('/', async (req, res) => {
-  if (Cache.exists('routes:/index')) {
+  if (await Cache.exists('routes:/index')) {
     res.render('index', Cache.getCacheData('routes:/index'))
     return
   }
@@ -146,6 +146,12 @@ const exitHandler = async signal => {
 process.on('SIGINT', exitHandler)
 process.on('SIGQUIT', exitHandler)
 process.on('SIGTSTP', exitHandler)
+
+process.on('SIGUSR2', async () => {
+  util.info(logger, 'Received SIGUSR2, writing cache to the disk!')
+  await Cache.save()
+  util.info(logger, 'Done!')
+})
 
 process.once('loadedConfig', () => {
   app.listen(env.listenPort, () => {
