@@ -76,10 +76,10 @@ class Util {
     if (!bypassCache && await cache.exists('skyblock/auctions/all')) return await cache.getCache('skyblock/auctions/all')
     const firstPage = await Util.getSkyBlockAuctions(key)
     let auctions = firstPage.auctions
-    for (let i = 1; i < firstPage.totalPages; i++) {
-      const res = await Util.getSkyBlockAuctions(key, i)
-      auctions = auctions.concat(res.auctions)
-    }
+    const promises = []
+    for (let i = 1; i < firstPage.totalPages; i++) promises.push(Util.getSkyBlockAuctions(key, i))
+    const results = await Promise.all(promises)
+    results.forEach(res => auctions = auctions.concat(res.auctions))
     await cache.setCache('skyblock/auctions/all', auctions, 1000*60*60*24) // expires in a day
     this.log(`Fetched ${auctions.length} auctions. Expires in a day.`)
     return auctions
@@ -199,6 +199,11 @@ class Util {
     const minutes = Math.floor((time-(1000*60*60*24*days+1000*60*60*hours))/(1000*60))
     const seconds = Math.floor((time-(1000*60*60*24*days+1000*60*60*hours+1000*60*minutes))/1000)
     return `${days === 0 ? '': `${days}d`}${days === 0 && hours === 0 ? '' : `${hours}h`}${days === 0 && hours === 0 && minutes === 0 ? '' : `${minutes}m`}${seconds}s`
+  }
+
+  static async info(logger, message, metadata = null) {
+    logger.info(message)
+    return await Util.log(message, metadata)
   }
 
   static async log(message, metadata = null) {

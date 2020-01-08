@@ -67,7 +67,7 @@
           const tr = document.createElement('tr')
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
-          aItemName.href = `/auctions/${auction.displayName}`
+          aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
           aItemName.textContent = htmlDecode(auction.displayName)
           itemName.appendChild(aItemName)
           const sellPrice = document.createElement('td')
@@ -90,7 +90,7 @@
           const tr = document.createElement('tr')
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
-          aItemName.href = `/auctions/${auction.displayName}`
+          aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
           aItemName.textContent = htmlDecode(auction.displayName)
           itemName.appendChild(aItemName)
           const sellPrice = document.createElement('td')
@@ -121,7 +121,7 @@
               const tr = document.createElement('tr')
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
-              aItemName.href = `/auctions/${auction.displayName}`
+              aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
               aItemName.textContent = htmlDecode(auction.displayName)
               itemName.appendChild(aItemName)
               const sellPrice = document.createElement('td')
@@ -145,7 +145,7 @@
               const tr = document.createElement('tr')
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
-              aItemName.href = `/auctions/${auction.displayName}`
+              aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
               aItemName.textContent = htmlDecode(auction.displayName)
               itemName.appendChild(aItemName)
               const sellPrice = document.createElement('td')

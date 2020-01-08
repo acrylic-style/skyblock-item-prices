@@ -1,5 +1,8 @@
 const fs = require('fs').promises
 const FILE = `${__dirname}/../cache.json`
+const { LoggerFactory } = require('logger.js')
+const logger = LoggerFactory.getLogger('cache', 'blue')
+const util = require('./util')
 
 /**
  * @typedef CacheData
@@ -12,16 +15,27 @@ const FILE = `${__dirname}/../cache.json`
  * Provides static cache methods.
  */
 class Cache {
+  cache = null
+
+  static async loadFile() {
+    await Cache.checkFile()
+    this.cache = JSON.parse(await fs.readFile(FILE, 'utf-8'))
+    return this.cache
+  }
+
   static async checkFile() {
-    await fs.stat(FILE).catch(async () => await fs.writeFile(FILE, '{}'))
+    await fs.stat(FILE).catch(async () => {
+      util.info(logger, 'Creating new empty cache.')
+      await fs.writeFile(FILE, '{}')
+    })
   }
 
   /**
    * @returns {Promise<{[id: string]: CacheData}>}
    */
   static async getCacheData() {
-    await Cache.checkFile()
-    return JSON.parse(await fs.readFile(FILE, 'utf-8'))
+    if (this.cache == null) return await this.loadFile()
+    return this.cache
   }
 
   /**
@@ -31,9 +45,7 @@ class Cache {
    * @param {number} expiresAfter in milliseconds
    */
   static async setCache(key, value, expiresAfter) {
-    const data = await Cache.getCacheData()
-    data[key] = { value: value, expiresAfter: Date.now() + expiresAfter, lastUpdated: Date.now() }
-    return await fs.writeFile(FILE, JSON.stringify(data))
+    this.cache[key] = { value: value, expiresAfter: Date.now() + expiresAfter, lastUpdated: Date.now() }
   }
 
   /**
@@ -41,9 +53,7 @@ class Cache {
    * @param {string} key 
    */
   static async invalidateCache(key) {
-    const data = await Cache.getCacheData()
-    delete data[key]
-    return await fs.writeFile(FILE, JSON.stringify(data))
+    delete this.cache[key]
   }
 
   /**
@@ -53,7 +63,7 @@ class Cache {
    * @returns {Promise<any>} cache if found null otherwise
    */
   static async getCache(key) {
-    const data = (await Cache.getCacheData())[key]
+    const data = this.cache[key]
     if (data && data.expiresAfter < Date.now() || data.value === undefined) await Cache.invalidateCache(key)
     return data ? data.value : null
   }
@@ -65,7 +75,7 @@ class Cache {
    * @returns {Promise<CacheData>} cache if found null otherwise
    */
   static async getRawCache(key) {
-    const data = (await Cache.getCacheData())[key]
+    const data = this.cache[key]
     if (data && data.expiresAfter < Date.now() || data.value === undefined) await Cache.invalidateCache(key)
     return data
   }
@@ -76,16 +86,20 @@ class Cache {
    * @returns {Promise<boolean>}
    */
   static async exists(key) {
-    const data = (await Cache.getCacheData())[key]
+    const data = this.cache[key]
     if (data && data.expiresAfter < Date.now() || data === undefined || data.value === undefined) await Cache.invalidateCache(key)
-    return !!(await Cache.getCacheData())[key] // response: nO
+    return !!this.cache[key] // response: nO
   }
 
   /**
    * Deletes all cache even if their expire date hasn't elapsed yet.
    */
   static async clearCache() {
-    return await fs.writeFile(FILE, '{}')
+    this.cache = {}
+  }
+
+  static async save() {
+    return await fs.writeFile(FILE, JSON.stringify(this.cache))
   }
 }
 

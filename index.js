@@ -12,9 +12,10 @@ require('dotenv-safe').config({ allowEmptyValues: true })
 const env = process.env
 app.set('view engine', 'ejs')
 require('./src/typedefs')
+const Cache = require('./src/cache')
 
 app.get(/.*/, (req, res, next) => {
-  util.log(`Access to ${req.path} from ${req.ip}`, util.toMetadata(req))
+  util.info(logger, `Access to ${req.path} from ${req.ip}`, util.toMetadata(req))
   next()
 })
 
@@ -86,7 +87,7 @@ app.get('/', async (req, res) => {
         const auction = auctionsMapRaw[key][i]
         const item = await util.getFirstItem(auction.item_bytes)
         const item_amount = item.Count.value
-        const bid = auction.highest_bid_amount/item_amount
+        const bid = Math.round(auction.highest_bid_amount/item_amount)
         if (auctionsMapRaw[key].filter(auction => (auction.end-Date.now()) <= 1000*60*10).length === 0 || (auction.end-Date.now()) <= 1000*60*10) sum += bid
         if (highestBid < bid) highestBid = bid
         if (lowestBid > bid && bid > 0) lowestBid = bid
@@ -106,8 +107,8 @@ app.get('/', async (req, res) => {
   res.render('index', {
     auctions: auctionsFiltered,
     auctionsRaw: auctions2,
-    auctionsCount: Math.round(auctionsSum),
-    auctionsRawCount: Math.round(Object.values(allAuctions).reduce((a, b) => a + b)),
+    auctionsCount: auctionsSum,
+    auctionsRawCount: Object.values(allAuctions).reduce((a, b) => a + b),
   })
 })
 
@@ -116,7 +117,32 @@ app.use('/api', routes.api)
 app.use('/', routes.auctions)
 app.use('/', routes.auction)
 
-app.listen(env.listenPort, () => {
-  logger.info('Web server is ready!')
-  util.log('Web server has been started and ready to go.')
+util.info(logger, 'Loading cache...')
+Cache.getCacheData().then(data => {
+  util.info(logger, `Loaded cache. (${Math.round(JSON.stringify(data).length/1024/1024*100)/100}MB, ${Object.keys(data).length} entries)`)
+  process.emit('loadedConfig')
+})
+
+setInterval(async () => {
+  await Cache.save()
+}, 1000*60) // save config every 60 seconds
+
+let exitTrap = false
+const exitHandler = async signal => {
+  if (!exitTrap) {
+    exitTrap = true
+    util.info(logger, 'Writing cache to the disk... (Press CTRL+C again to quit)')
+    await Cache.save()
+    process.kill(process.pid, signal)
+  } else process.kill(process.pid, signal)
+}
+
+process.on('SIGINT', exitHandler)
+process.on('SIGQUIT', exitHandler)
+process.on('SIGTSTP', exitHandler)
+
+process.once('loadedConfig', () => {
+  app.listen(env.listenPort, () => {
+    util.info(logger, 'Web server has been started and ready to go.')
+  })
 })

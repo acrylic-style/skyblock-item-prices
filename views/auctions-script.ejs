@@ -12,7 +12,7 @@
           "sellPrice": <%= auction.sellPrice %>,
           "highestBid": <%= auction.highestBid %>,
           "lowestBid": <%= auction.lowestBid %>,
-          "auctions": <%= auction.auctions %>,
+          "auctions": <%= auction.auctions || 0 %>,
         })
       <% }) //%>
       const auctionsRaw = []
@@ -22,7 +22,7 @@
           "sellPrice": <%= auction.sellPrice %>,
           "highestBid": <%= auction.highestBid %>,
           "lowestBid": <%= auction.lowestBid %>,
-          "auctions": <%= auction.auctions %>,
+          "auctions": <%= auction.auctions || 0 %>,
         })
       <% }) //%>
     </script>

@@ -27,12 +27,8 @@ router.get('/auctions/:name', async (req, res) => {
   }
   const auctions2 = []
   allAuctions = auctionsRaw.length
-  /**
-   * @type {Auction[]}
-   */
-  const auctionsMapRaw = auctionsRaw.filter(auction => auction.bids.length > 0)
-  for (let i = 0; i < auctionsMapRaw.length; i++) {
-    const auction = auctionsMapRaw[i]
+  for (let i = 0; i < auctionsRaw.length; i++) {
+    const auction = auctionsRaw[i]
     const item = await util.getFirstItem(auction.item_bytes)
     const item_amount = item.Count.value
     const bid = auction.highest_bid_amount/item_amount
