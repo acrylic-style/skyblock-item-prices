@@ -48,7 +48,7 @@ app.get('/', async (req, res, next) => {
   })
   let sum = 0
   let highestBid = 0
-  let lowestBid = Number.MAX_VALUE
+  let lowestBid = Number.MAX_SAFE_INTEGER
   const keys = Object.keys(auctionsMap)
   for (let oi = 0; oi < keys.length; oi++) {
     const key = keys[oi]
@@ -72,7 +72,7 @@ app.get('/', async (req, res, next) => {
     }
     sum = 0
     highestBid = 0
-    lowestBid = Number.MAX_VALUE
+    lowestBid = Number.MAX_SAFE_INTEGER
   }
   const auctions2 = []
   allAuctions = {}
@@ -97,17 +97,19 @@ app.get('/', async (req, res, next) => {
         if (highestBid < bid) highestBid = bid
         if (lowestBid > bid && bid > 0) lowestBid = bid
       }
-      auctions2.push({
-        displayName: key,
-        sellPrice: Math.round(sum/auctionsMapRaw[key].filter(auction => auctionsMapRaw[key].filter(auction => (auction.end-Date.now()) <= 1000*60*10).length === 0 || (auction.end-Date.now()) <= 1000*60*10).length),
-        highestBid,
-        lowestBid,
-        auctions: allAuctions[key],
-      })
+      if (lowestBid < Number.MAX_SAFE_INTEGER && highestBid > 0 && sum > 0) {
+        auctions2.push({
+          displayName: key,
+          sellPrice: Math.round(sum/auctionsMapRaw[key].filter(auction => auctionsMapRaw[key].filter(auction => (auction.end-Date.now()) <= 1000*60*10).length === 0 || (auction.end-Date.now()) <= 1000*60*10).length),
+          highestBid,
+          lowestBid,
+          auctions: allAuctions[key],
+        })
+      }
     }
     sum = 0
     highestBid = 0
-    lowestBid = Number.MAX_VALUE
+    lowestBid = Number.MAX_SAFE_INTEGER
   }
   const data = {
     auctions: auctionsFiltered,

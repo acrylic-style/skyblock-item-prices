@@ -43,7 +43,7 @@ class Cache {
    * @param {any} value any value
    * @param {number} expiresAfter in milliseconds
    */
-  static async setCache(key, value, expiresAfter) {
+  static setCache(key, value, expiresAfter) {
     this.cache[key] = { value: value, expiresAfter: Date.now() + expiresAfter, lastUpdated: Date.now() }
   }
 
@@ -51,7 +51,7 @@ class Cache {
    * Invalidates cache.
    * @param {string} key 
    */
-  static async invalidateCache(key) {
+  static invalidateCache(key) {
     delete this.cache[key]
   }
 
@@ -59,11 +59,11 @@ class Cache {
    * Get cache value.
    * To check if it exists, use Cache#exists(key).
    * @param {string} key 
-   * @returns {Promise<any>} cache if found null otherwise
+   * @returns {any} cache if found null otherwise
    */
-  static async getCache(key) {
+  static getCache(key) {
     const data = this.cache[key]
-    if (data && data.expiresAfter < Date.now() || data.value === undefined) await Cache.invalidateCache(key)
+    if (data && data.expiresAfter < Date.now() || data.value === undefined) Cache.invalidateCache(key)
     return data ? data.value : null
   }
 
@@ -71,29 +71,29 @@ class Cache {
    * Get cache value.
    * To check if it exists, use Cache#exists(key).
    * @param {string} key 
-   * @returns {Promise<CacheData>} cache if found null otherwise
+   * @returns {CacheData} cache if found null otherwise
    */
-  static async getRawCache(key) {
+  static getRawCache(key) {
     const data = this.cache[key]
-    if (data && data.expiresAfter < Date.now() || data.value === undefined) await Cache.invalidateCache(key)
+    if (data && data.expiresAfter < Date.now() || data.value === undefined) Cache.invalidateCache(key)
     return data
   }
 
   /**
    * Checks if key exists in the cache.
    * @param {string} key
-   * @returns {Promise<boolean>}
+   * @returns {boolean}
    */
-  static async exists(key) {
+  static exists(key) {
     const data = this.cache[key]
-    if (data && data.expiresAfter < Date.now() || data === undefined || data.value === undefined) await Cache.invalidateCache(key)
+    if (data && data.expiresAfter < Date.now() || data === undefined || data.value === undefined) Cache.invalidateCache(key)
     return !!this.cache[key] // response: nO
   }
 
   /**
    * Deletes all cache even if their expire date hasn't elapsed yet.
    */
-  static async clearCache() {
+  static clearCache() {
     this.cache = {}
   }
 
