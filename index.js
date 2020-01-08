@@ -21,7 +21,7 @@ app.get(/.*/, (req, res, next) => {
 
 app.get('/', async (req, res) => {
   if (await Cache.exists('routes:/index')) {
-    res.render('index', await Cache.getCacheData('routes:/index'))
+    res.render('index', await Cache.getCache('routes:/index'))
     return
   }
   const auctionsRaw = await util.getAllSkyblockAuctions(env.apiKey)
