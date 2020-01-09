@@ -16,7 +16,7 @@ router.get('/auctions/:name', async (req, res, next) => {
     const auction = auctions[i]
     const item = await util.getFirstItem(auction.item_bytes)
     const item_amount = item.Count.value
-    const bid = auction.highest_bid_amount/item_amount
+    const bid = auction.highest_bid_amount
     auctionsFiltered.push({
       displayName: `${auction.item_name} (x${item_amount})`,
       auctionId: auction.uuid,
@@ -31,7 +31,7 @@ router.get('/auctions/:name', async (req, res, next) => {
     const auction = auctionsRaw[i]
     const item = await util.getFirstItem(auction.item_bytes)
     const item_amount = item.Count.value
-    const bid = auction.highest_bid_amount/item_amount
+    const bid = auction.highest_bid_amount
     auctions2.push({
       displayName: `${auction.item_name} (x${item_amount})`,
       auctionId: auction.uuid,
