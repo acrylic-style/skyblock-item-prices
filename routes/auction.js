@@ -19,11 +19,14 @@ router.get('/auction/:id', async (req, res, next) => {
   auctionsName.forEach(a => nameSum += a.highest_bid_amount)
   const item = await util.getFirstItem(auction.item_bytes)
   const item_name = minecraft.findItemOrBlockById(item.id.value).name
+  delete item.tag.value.ExtraAttributes
   res.render('auction', {
     data: {
       ...auction,
       item_data: item,
       display_name: item.tag.value.display.value.Name.value,
+      stripped_display_name: util.stripColorCode(item.tag.value.display.value.Name.value),
+      stripped_item_lore: util.stripColorCode(auction.item_lore),
     },
     item_name,
     avgPrice: Math.round(nameSum/auctionsName.length),

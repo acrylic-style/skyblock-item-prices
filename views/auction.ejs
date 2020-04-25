@@ -2,8 +2,10 @@
 <html>
   <%- include('header', {title: `Auction details | Skyblock Item Prices List`, script: 'auction-script'}); %>
     <meta name="theme-color" content="#000000" />
-    <meta name="title" content="<%= item_name %>" />
-    <meta name="description" content="<%= item_name %> (x<%= data.item_data.Count.value %>) is selling for <%= data.highest_bid_amount.toLocaleString() %> coins!" />
+    <meta id="meta_title" name="title" content="<%= data.stripped_display_name %>" />
+    <meta id="meta_description" name="description" content="<%= data.stripped_display_name %> (x<%= data.item_data.Count.value %>) is selling for <%= data.highest_bid_amount.toLocaleString() %> coins!
+
+<%= data.stripped_item_lore %> " />
   </head>
   <body style="background-color: #101010; color: white;">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
