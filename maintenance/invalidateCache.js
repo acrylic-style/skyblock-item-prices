@@ -1,3 +1,4 @@
+console.log("starting...")
 const cache = require('../src/cache')
 const arg = process.argv[2]
 if (!arg) return console.error('please specify cache id!')
