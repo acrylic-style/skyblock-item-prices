@@ -11,7 +11,7 @@
     "express": "^4.17.1",
     "logger.js": "acrylic-style/logger.js",
     "minecraft-data": "^2.41.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "prismarine-nbt": "^1.2.1"
   }
 }
