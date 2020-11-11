@@ -209,7 +209,7 @@ class Util {
   static async log(logger, message, metadata = null) {
     if (!process.env.logflareAPIKey || !process.env.logflareSource) return
     const body = { source: process.env.logflareSource, log_entry: message }
-    if (metadata !== null) body.metadata = JSON.stringify(metadata)
+    //if (metadata !== null) body.metadata = JSON.stringify(metadata)
     const response = await fetch('https://api.logflare.app/logs', {
       body: JSON.stringify(body),
       headers: {
@@ -219,7 +219,7 @@ class Util {
       method: 'POST',
     }).then(res => res.json())
     if (response.message !== 'Logged!') {
-      logger.error(`Couldn't send log: ${JSON.stringify(response)}\n - Message: ${message}\n - Metadata: ${JSON.stringify(metadata)}`)
+      throw new Error(`Couldn't send log: ${JSON.stringify(response)}\n - Message: ${message}\n - Metadata: ${JSON.stringify(metadata)}`)
     }
   }
 
