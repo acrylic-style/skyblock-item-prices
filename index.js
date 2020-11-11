@@ -51,8 +51,8 @@ app.get('/', async (req, res, next) => {
     const auction = filtered[i]
     const item = await util.getFirstItem(auction.item_bytes)
     const name = item.tag.value.display.value.Name.value
-    if (!auctionsMap[name]) auctionsMap[name] = 0
-    auctionsMap[name] = auctionsMap[name] + 1
+    if (!auctionsMap[name]) auctionsMap[name] = []
+    auctionsMap[name].push(auction)
   }
   let sum = 0
   let highestBid = 0

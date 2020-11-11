@@ -113,7 +113,7 @@
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
           aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
-          aItemName.textContent = htmlDecode(auction.displayName)
+          aItemName.innerHTML = convertColorCode(htmlDecode(auction.displayName))
           itemName.appendChild(aItemName)
           const sellPrice = document.createElement('td')
           sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
@@ -136,7 +136,7 @@
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
           aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
-          aItemName.textContent = htmlDecode(auction.displayName)
+          aItemName.innerHTML = convertColorCode(htmlDecode(auction.displayName))
           itemName.appendChild(aItemName)
           const sellPrice = document.createElement('td')
           sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
@@ -167,7 +167,7 @@
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
               aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
-              aItemName.textContent = htmlDecode(auction.displayName)
+              aItemName.innerHTML = convertColorCode(htmlDecode(auction.displayName))
               itemName.appendChild(aItemName)
               const sellPrice = document.createElement('td')
               sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
@@ -191,7 +191,7 @@
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
               aItemName.href = `/auctions/${htmlDecode(auction.displayName)}`
-              aItemName.textContent = htmlDecode(auction.displayName)
+              aItemName.innerHTML = convertColorCode(htmlDecode(auction.displayName))
               itemName.appendChild(aItemName)
               const sellPrice = document.createElement('td')
               sellPrice.textContent = htmlDecode(auction.sellPrice.toLocaleString())
