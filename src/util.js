@@ -203,10 +203,10 @@ class Util {
 
   static async info(logger, message, metadata = null) {
     logger.info(message)
-    return await Util.log(logger, message, metadata)
+    return await Util.log(message, metadata)
   }
 
-  static async log(logger, message, metadata = null) {
+  static async log(message, metadata = null) {
     if (!process.env.logflareAPIKey || !process.env.logflareSource) return
     const body = { source: process.env.logflareSource, log_entry: message }
     //if (metadata !== null) body.metadata = JSON.stringify(metadata)
@@ -219,7 +219,7 @@ class Util {
       method: 'POST',
     }).then(res => res.json())
     if (response.message !== 'Logged!') {
-      throw new Error(`Couldn't send log: ${JSON.stringify(response)}\n - Message: ${message}\n - Metadata: ${JSON.stringify(metadata)}`)
+      throw new Error(`Couldn't send log: ${JSON.stringify(response)}\n - Body: ${JSON.stringify(body)}`)//\n - Metadata: ${JSON.stringify(metadata)}`)
     }
   }
 
