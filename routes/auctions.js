@@ -19,7 +19,7 @@ router.get('/auctions/:name', async (req, res, next) => {
     const bid = auction.highest_bid_amount
     const coloredName = item.tag.value.display.value.Name.value
     auctionsFiltered.push({
-      coloredName: `${coloredName} \u00A78(x${item_amount})`,
+      coloredName: `${coloredName} \u00A77(x${item_amount})`,
       displayName: `${auction.item_name} (x${item_amount})`,
       auctionId: auction.uuid,
       currentBid: bid,
