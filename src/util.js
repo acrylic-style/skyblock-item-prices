@@ -203,13 +203,15 @@ class Util {
 
   static async info(logger, message, metadata = null) {
     logger.info(message)
-    return await Util.log(message, metadata)
+    return await Util.log(logger, message, metadata)
   }
 
-  static async log(message, metadata = null) {
+  static async log(logger, message, metadata = null) {
     if (!process.env.logflareAPIKey || !process.env.logflareSource) return
+    const body = { source: process.env.logflareSource, log_entry: message }
+    if (metadata !== null) body.metadata = JSON.stringify(metadata)
     const response = await fetch('https://api.logflare.app/logs', {
-      body: `{"source": "${process.env.logflareSource}", "log_entry": "${message}", "metadata": ${metadata === null ? null : JSON.stringify(metadata)}}`,
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
         'X-Api-Key': process.env.logflareAPIKey,
@@ -217,7 +219,7 @@ class Util {
       method: 'POST',
     }).then(res => res.json())
     if (response.message !== 'Logged!') {
-      throw new Error(`Couldn't send log: ${JSON.stringify(response)}\n - Message: ${message}\n - Metadata: ${JSON.stringify(metadata)}`)
+      logger.error(`Couldn't send log: ${JSON.stringify(response)}\n - Message: ${message}\n - Metadata: ${JSON.stringify(metadata)}`)
     }
   }
 
