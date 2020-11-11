@@ -143,19 +143,15 @@ setInterval(async () => {
   await Cache.save()
 }, 1000*60) // save config every 60 seconds
 
-let exitTrap = false
-const exitHandler = async signal => {
-  if (!exitTrap) {
-    exitTrap = true
-    util.info(logger, 'Writing cache to the disk... (Press CTRL+C again to quit)')
-    await Cache.save()
-    process.kill(process.pid, signal)
-  } else process.kill(process.pid, signal)
+const exitHandler = async () => {
+  util.info(logger, 'Writing cache to the disk... (Press CTRL+C again to quit)')
+  await Cache.save()
+  process.kill(process.pid, 'SIGINT')
 }
 
-process.on('SIGINT', exitHandler)
-process.on('SIGQUIT', exitHandler)
-process.on('SIGTSTP', exitHandler)
+process.once('SIGINT', exitHandler)
+process.once('SIGQUIT', exitHandler)
+process.once('SIGTSTP', exitHandler)
 
 process.on('SIGUSR2', async () => {
   util.info(logger, 'Received SIGUSR2, writing cache to the disk!')
