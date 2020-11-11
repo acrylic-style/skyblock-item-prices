@@ -38,15 +38,22 @@ app.get('/', async (req, res, next) => {
    */
   const auctionsMapRaw = {}
   let allAuctions = {}
-  auctions.forEach(auction => {
-    if (!allAuctions[util.stripColor(auction.item_name)]) allAuctions[util.stripColor(auction.item_name)] = 0
-    allAuctions[util.stripColor(auction.item_name)] = allAuctions[util.stripColor(auction.item_name)] + 1
-  })
+  for (let i = 0; i < auctions.length; i++) {
+    const auction = auctions[i]
+    const item = await util.getFirstItem(auction.item_bytes)
+    const name = item.tag.value.display.value.Name.value
+    if (!allAuctions[name]) allAuctions[name] = 0
+    allAuctions[name] = allAuctions[name] + 1
+  }
   const auctionsSum = Object.values(allAuctions).reduce((a, b) => a + b)
-  auctions.filter(auction => auction.bids.length > 0).forEach(auction => {
-    if (!auctionsMap[util.stripColor(auction.item_name)]) auctionsMap[util.stripColor(auction.item_name)] = []
-    auctionsMap[util.stripColor(auction.item_name)].push(auction)
-  })
+  const filtered = auctions.filter(auction => auction.bids.length > 0)
+  for (let i = 0; i < filtered.length; i++) {
+    const auction = filtered[i]
+    const item = await util.getFirstItem(auction.item_bytes)
+    const name = item.tag.value.display.value.Name.value
+    if (!auctionsMap[name]) auctionsMap[name] = 0
+    auctionsMap[name] = auctionsMap[name] + 1
+  }
   let sum = 0
   let highestBid = 0
   let lowestBid = Number.MAX_SAFE_INTEGER
@@ -77,14 +84,21 @@ app.get('/', async (req, res, next) => {
   }
   const auctions2 = []
   allAuctions = {}
-  auctionsRaw.forEach(auction => {
-    if (!allAuctions[util.stripColor(auction.item_name)]) allAuctions[util.stripColor(auction.item_name)] = 0
-    allAuctions[util.stripColor(auction.item_name)] = allAuctions[util.stripColor(auction.item_name)] + 1
-  })
-  auctionsRaw.filter(auction => auction.bids.length > 0).forEach(auction => {
-    if (auctionsMapRaw[util.stripColor(auction.item_name)] == null) auctionsMapRaw[util.stripColor(auction.item_name)] = []
-    auctionsMapRaw[util.stripColor(auction.item_name)].push(auction)
-  })
+  for (let i = 0; i < auctionsRaw.length; i++) {
+    const auction = auctionsRaw[i]
+    const item = await util.getFirstItem(auction.item_bytes)
+    const name = item.tag.value.display.value.Name.value
+    if (!allAuctions[name]) allAuctions[name] = 0
+    allAuctions[name] = allAuctions[name] + 1
+  }
+  const filtered2 = auctionsRaw.filter(auction => auction.bids.length > 0)
+  for (let i = 0; i < filtered2.length; i++) {
+    const auction = filtered2[i]
+    const item = await util.getFirstItem(auction.item_bytes)
+    const name = item.tag.value.display.value.Name.value
+    if (auctionsMapRaw[name] == null) auctionsMapRaw[name] = []
+    auctionsMapRaw[name].push(auction)
+  }
   const keys2 = Object.keys(auctionsMapRaw)
   for (let oi = 0; oi < keys.length; oi++) {
     const key = keys2[oi]

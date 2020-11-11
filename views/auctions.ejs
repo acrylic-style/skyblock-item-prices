@@ -1,6 +1,50 @@
 <!DOCTYPE html>
 <html>
   <%- include('header', {title: `Auctions of ${name} | Skyblock Item Prices List`, script: 'auctions-script-withid'}); %>
+    <script type="text/javascript">
+    function convertColorCode(s) {
+      s = s.replace(/\u00A70\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #000;"><b>$1</b></span>');
+      s = s.replace(/\u00A71\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #00a;"><b>$1</b></span>');
+      s = s.replace(/\u00A72\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #0a0;"><b>$1</b></span>');
+      s = s.replace(/\u00A73\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #0aa;"><b>$1</b></span>');
+      s = s.replace(/\u00A74\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #a00;"><b>$1</b></span>');
+      s = s.replace(/\u00A75\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #a0a;"><b>$1</b></span>');
+      s = s.replace(/\u00A76\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #fa0;"><b>$1</b></span>');
+      s = s.replace(/\u00A77\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #aaa;"><b>$1</b></span>');
+      s = s.replace(/\u00A78\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #555;"><b>$1</b></span>');
+      s = s.replace(/\u00A79\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #55f;"><b>$1</b></span>');
+      s = s.replace(/\u00A7a\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #5f5;"><b>$1</b></span>');
+      s = s.replace(/\u00A7b\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #5ff;"><b>$1</b></span>');
+      s = s.replace(/\u00A7c\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #f55;"><b>$1</b></span>');
+      s = s.replace(/\u00A7d\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #f5f;"><b>$1</b></span>');
+      s = s.replace(/\u00A7e\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #ff5;"><b>$1</b></span>');
+      s = s.replace(/\u00A7f\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #fff;"><b>$1</b></span>');
+      // ---
+      s = s.replace(/\u00A70(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #000;">$1</span>');
+      s = s.replace(/\u00A71(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #00a;">$1</span>');
+      s = s.replace(/\u00A72(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #0a0;">$1</span>');
+      s = s.replace(/\u00A73(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #0aa;">$1</span>');
+      s = s.replace(/\u00A74(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #a00;">$1</span>');
+      s = s.replace(/\u00A75(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #a0a;">$1</span>');
+      s = s.replace(/\u00A76(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #fa0;">$1</span>');
+      s = s.replace(/\u00A77(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #aaa;">$1</span>');
+      s = s.replace(/\u00A78(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #555;">$1</span>');
+      s = s.replace(/\u00A79(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #55f;">$1</span>');
+      s = s.replace(/\u00A7a(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #5f5;">$1</span>');
+      s = s.replace(/\u00A7b(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #5ff;">$1</span>');
+      s = s.replace(/\u00A7c(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #f55;">$1</span>');
+      s = s.replace(/\u00A7d(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #f5f;">$1</span>');
+      s = s.replace(/\u00A7e(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #ff5;">$1</span>');
+      s = s.replace(/\u00A7f(.*?)(?=\u00A7|\n|$)/gm, '<span style="color: #fff;">$1</span>');
+      s = s.replace(/\u00A7k(.*?)(?=\u00A7|\n|$)/gm, '$1');
+      s = s.replace(/\u00A7l(.*?)(?=\u00A7|\n|$)/gm, '<b>$1</b>');
+      s = s.replace(/\u00A7m(.*?)(?=\u00A7|\n|$)/gm, '<strike>$1</strike>');
+      s = s.replace(/\u00A7n(.*?)(?=\u00A7|\n|$)/gm, '<u>$1</u>');
+      s = s.replace(/\u00A7o(.*?)(?=\u00A7|\n|$)/gm, '<i>$1</i>');
+      s = s.replace(/\u00A7r(.*?)(?=\u00A7|\n|$)/gm, '$1');
+      return s;
+    }
+    </script>
   </head>
   <body>
     <nav>
@@ -66,7 +110,7 @@
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
           aItemName.href = `/auction/${auction.auctionId}`
-          aItemName.textContent = htmlDecode(auction.displayName)
+          aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
           itemName.appendChild(aItemName)
           const highestBid = document.createElement('td')
           highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
@@ -86,7 +130,7 @@
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
           aItemName.href = `/auction/${auction.auctionId}`
-          aItemName.textContent = htmlDecode(auction.displayName)
+          aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
           itemName.appendChild(aItemName)
           const highestBid = document.createElement('td')
           highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
@@ -114,7 +158,7 @@
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
               aItemName.href = `/auction/${auction.auctionId}`
-              aItemName.textContent = htmlDecode(auction.displayName)
+              aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
               itemName.appendChild(aItemName)
               const highestBid = document.createElement('td')
               highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
@@ -135,7 +179,7 @@
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
               aItemName.href = `/auction/${auction.auctionId}`
-              aItemName.textContent = htmlDecode(auction.displayName)
+              aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
               itemName.appendChild(aItemName)
               const highestBid = document.createElement('td')
               highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())

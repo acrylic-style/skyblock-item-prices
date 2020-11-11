@@ -209,7 +209,7 @@ class Util {
   static async log(message, metadata = null) {
     if (!process.env.logflareAPIKey || !process.env.logflareSource) return
     const body = { source: process.env.logflareSource, log_entry: message }
-    //if (metadata !== null) body.metadata = JSON.stringify(metadata)
+    if (metadata !== null) body.metadata = metadata
     const response = await fetch('https://api.logflare.app/logs', {
       body: JSON.stringify(body),
       headers: {
