@@ -127,8 +127,8 @@ app.get('/', async (req, res, next) => {
     lowestBid = Number.MAX_SAFE_INTEGER
   }
   const data = {
-    auctions: auctionsFiltered,
-    auctionsRaw: auctions2,
+    auctions: auctionsFiltered.sort((a, b) => a.displayName.localeCompare(b.displayName)),
+    auctionsRaw: auctions2.sort((a, b) => a.displayName.localeCompare(b.displayName)),
     auctionsCount: auctionsSum,
     auctionsRawCount: Object.values(allAuctions).reduce((a, b) => a + b),
   }
