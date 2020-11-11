@@ -110,7 +110,7 @@
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
           aItemName.href = `/auction/${auction.auctionId}`
-          aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
+          aItemName.innerHTML = convertColorCode(htmlDecode(auction.coloredName))
           itemName.appendChild(aItemName)
           const highestBid = document.createElement('td')
           highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
@@ -130,7 +130,7 @@
           const itemName = document.createElement('td')
           const aItemName = document.createElement('a')
           aItemName.href = `/auction/${auction.auctionId}`
-          aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
+          aItemName.innerHTML = convertColorCode(htmlDecode(auction.coloredName))
           itemName.appendChild(aItemName)
           const highestBid = document.createElement('td')
           highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
@@ -158,7 +158,7 @@
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
               aItemName.href = `/auction/${auction.auctionId}`
-              aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
+              aItemName.innerHTML = convertColorCode(htmlDecode(auction.coloredName))
               itemName.appendChild(aItemName)
               const highestBid = document.createElement('td')
               highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
@@ -179,7 +179,7 @@
               const itemName = document.createElement('td')
               const aItemName = document.createElement('a')
               aItemName.href = `/auction/${auction.auctionId}`
-              aItemName.textContent = convertColorCode(htmlDecode(auction.coloredName))
+              aItemName.innerHTML = convertColorCode(htmlDecode(auction.coloredName))
               itemName.appendChild(aItemName)
               const highestBid = document.createElement('td')
               highestBid.textContent = htmlDecode(auction.currentBid.toLocaleString())
